@@ -33,7 +33,8 @@ const App = () => {
   const [manager, setManager] = useState('');
   const [players, setPlayers] = useState([]);
   const [balance, setBalance] = useState('');
-  const [enteredAmount, setAmount] = useState('')
+  const [enteredAmount, setAmount] = useState('');
+  const [message, setMessage] = useState('')
 
   useEffect( () => {
     
@@ -58,7 +59,25 @@ const App = () => {
 
   },[]);
 
+  //Handeling the amount entered by the player
   const amountChangeHandler = event => { setAmount(event.target.value) }
+
+  //Passing the player information to the contract
+  const submitHandler = async event => {
+    event.preventDefault();
+
+    //List of accounts
+    const accounts = await web3.eth.getAccounts();
+
+    setMessage('Waiting on transaction success...');
+
+    await lottery.methods.enter().send({
+      from: accounts[0],
+      value: web3.utils.toWei(enteredAmount, 'ether')
+    });
+
+    setMessage('You have entered!');
+  };
 
   return (
     <div>
@@ -66,18 +85,22 @@ const App = () => {
       <p>This contract is managed by {manager}</p>
       <p>There are currently {players.length} people entered, competing to win {web3.utils.fromWei(balance, 'ether')} ether!</p>
       <hr/>
-      <form>
+
+      <form onSubmit={ submitHandler }>
         <h4>Want to rty your luck?</h4>
         <div>
           <label>Amount of ether to enter</label>
           <input
             type='number'
-            value={enteredAmount}
-            onChange={amountChangeHandler}
+            value={ enteredAmount }
+            onChange={ amountChangeHandler }
           />
         </div>
         <button>Enter</button>
       </form>
+      <hr/>
+
+      <h1>{message}</h1>
     </div>
   );
 };
