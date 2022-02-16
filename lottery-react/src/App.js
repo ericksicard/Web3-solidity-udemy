@@ -33,6 +33,7 @@ const App = () => {
   const [manager, setManager] = useState('');
   const [players, setPlayers] = useState([]);
   const [balance, setBalance] = useState('');
+  const [enteredAmount, setAmount] = useState('')
 
   useEffect( () => {
     
@@ -54,14 +55,29 @@ const App = () => {
     fetchManager()
     // make sure to catch any error
     .catch(console.error);
-    
+
   },[]);
+
+  const amountChangeHandler = event => { setAmount(event.target.value) }
 
   return (
     <div>
       <h2>Lottery Contract</h2>
       <p>This contract is managed by {manager}</p>
       <p>There are currently {players.length} people entered, competing to win {web3.utils.fromWei(balance, 'ether')} ether!</p>
+      <hr/>
+      <form>
+        <h4>Want to rty your luck?</h4>
+        <div>
+          <label>Amount of ether to enter</label>
+          <input
+            type='number'
+            value={enteredAmount}
+            onChange={amountChangeHandler}
+          />
+        </div>
+        <button>Enter</button>
+      </form>
     </div>
   );
 };
