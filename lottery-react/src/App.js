@@ -39,7 +39,7 @@ const App = () => {
   useEffect( () => {
     
     // declare the async data fetching function
-    const fetchManager = async () => {
+    const fetchContractData = async () => {
       
       // get the data from the contract
        const mngr = await lottery.methods.manager().call();
@@ -53,7 +53,7 @@ const App = () => {
       };
     
     // call the function
-    fetchManager()
+    fetchContractData()
     // make sure to catch any error
     .catch(console.error);
 
@@ -79,6 +79,19 @@ const App = () => {
     setMessage('You have entered!');
   };
 
+  //Picking a winner
+  const handleWinner = async () => {
+    const accounts = await web3.eth.getAccounts();
+    
+    setMessage('Waiting on transaction success...');
+
+    await lottery.methods.pickWinner().send({
+      from: accounts[0]
+    });
+
+    setMessage('A winner has been picked!');
+  };
+
   return (
     <div>
       <h2>Lottery Contract</h2>
@@ -98,6 +111,11 @@ const App = () => {
         </div>
         <button>Enter</button>
       </form>
+      <hr/>
+
+      <h4>Ready to pick a winner?</h4>
+      <button onClick={ handleWinner }>Pick a winner!</button>
+
       <hr/>
 
       <h1>{message}</h1>
