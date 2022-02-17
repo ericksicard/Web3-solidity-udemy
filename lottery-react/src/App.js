@@ -3,30 +3,6 @@ import React, { useState, useEffect } from "react";
 import lottery from './lottery';
 import web3 from "./web3";
 
-/* 
-class App extends Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = { manager: ''};
-  }
-
-  async componentDidMount() {
-    const manager = await lottery.methods.manager().call();
-    this.setState({ manager })
-  }
-
-  render() {
-    return (
-      <div>
-        <h2>Lottery Contract</h2>
-        <p>This contract is managed by {this.state.manager}</p>
-      </div>
-    );
-  }
-}
-*/
 
 const App = () => {
 
