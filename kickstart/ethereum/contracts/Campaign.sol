@@ -83,5 +83,19 @@ contract Campaign {
         request.recipient.transfer(request.value); //Sending the money to the provider
         request.complete = true; //Marking the request as completed
 
-    }     
+    }
+
+    function getSummary() public view returns (uint, uint, uint, uint, address) {
+        return (
+            minimumContribution,
+            this.balance,
+            requests.length,
+            approversCount,
+            manager
+        );
+    } 
+
+    function getRequestsCount() public view returns (uint) {
+        return requests.length;
+    }    
 }
